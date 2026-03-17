@@ -1,9 +1,13 @@
-[gd_scene load_steps=5 format=3 uid="uid://bmsde3r8kl1ag"]
+[gd_scene load_steps=9 format=3 uid="uid://bmsde3r8kl1ag"]
 
 [ext_resource type="Script" uid="uid://epg4ygi32mxu" path="res://scenes/UnitManager.gd" id="1_elqb8"]
 [ext_resource type="Script" uid="uid://c3b7mmctem2ol" path="res://scenes/TurnManager.gd" id="2_0bbpv"]
 [ext_resource type="PackedScene" uid="uid://upc8ed66t3qt" path="res://scenes/Map.tscn" id="2_rvslj"]
 [ext_resource type="Script" uid="uid://csdo5u26u0yt5" path="res://scenes/InputManager.gd" id="4_rarhs"]
+[ext_resource type="Script" uid="uid://cu5xj3m1ldog" path="res://scenes/EnemyAIController.gd" id="5_jlsqs"]
+[ext_resource type="Script" uid="uid://brijphysmky8a" path="res://scenes/CombatRules.gd" id="6_q8u5g"]
+[ext_resource type="Script" uid="uid://b1fnmyeniajpw" path="res://scenes/TacticalInputController.gd" id="7_lhr70"]
+[ext_resource type="Script" uid="uid://bckpxmihq62cu" path="res://scenes/MissionController.gd" id="8_wp0k4"]
 
 [node name="Node2D" type="Node2D"]
 
@@ -23,3 +27,15 @@ script = ExtResource("2_0bbpv")
 [node name="SceneContainer" type="Node" parent="."]
 
 [node name="Map" parent="SceneContainer" instance=ExtResource("2_rvslj")]
+
+[node name="EnemyAIController" type="Node" parent="."]
+script = ExtResource("5_jlsqs")
+
+[node name="CombatRules" type="Node" parent="."]
+script = ExtResource("6_q8u5g")
+
+[node name="TacticalInputController" type="Node" parent="."]
+script = ExtResource("7_lhr70")
+
+[node name="MissionController" type="Node" parent="."]
+script = ExtResource("8_wp0k4")
