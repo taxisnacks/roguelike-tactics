@@ -34,7 +34,7 @@ script = ExtResource("5_jlsqs")
 [node name="CombatRules" type="Node" parent="."]
 script = ExtResource("6_q8u5g")
 
-[node name="TacticalInputController" type="Node" parent="."]
+[node name="TacticalInputController" type="Node" parent="." groups=["tactical_input_controller"]]
 script = ExtResource("7_lhr70")
 
 [node name="MissionController" type="Node" parent="."]

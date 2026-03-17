@@ -1,6 +1,6 @@
 extends Node
 @onready var turn_manager = get_tree().get_first_node_in_group("turn_manager")
-
+@onready var TacticalInputController = get_tree().get_first_node_in_group("tactical_input_controller")
 signal active_unit_changed(unit)
 
 @export var player_faction := "player"

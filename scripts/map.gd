@@ -7,8 +7,6 @@ var debug_start_tile: Vector2i = Vector2i(-1, -1)
 var debug_end_tile: Vector2i = Vector2i(-1, -1)
 var debug_path: Array[Vector2i] = []
 var reachable_tiles: Array[Vector2i] = []
-var hover_tile: Vector2i = Vector2i(-1, -1)
-var hover_target = null
 var preview_path: Array[Vector2i] = []
 var astar := AStarGrid2D.new()
 var attack_target: Unit = null
@@ -185,78 +183,6 @@ func _on_active_unit_changed(unit):
 		# Clear all selection-related visuals
 		clear_action_state()
 	pass
-
-func _process(_delta):
-	var unit = unit_manager.active_unit
-	if unit_manager == null or unit == null:
-		return
-	if unit.is_moving:
-		return
-	
-	var tile := world_to_tile(get_global_mouse_position())
-	if tile == hover_tile:
-		return
-
-	hover_tile = tile
-	hover_target = unit_manager.get_unit_at_tile(tile)
-	attack_target = null
-	preview_path.clear()
-
-	# ATTACK PREVIEW
-	if hover_target != null \
-	and hover_target.unit_faction != unit.unit_faction \
-	and unit.can_attack_target(hover_target):
-		print("Target found successfully")
-		attack_target = hover_target
-		
-	# MOVEMENT PREVIEW
-	elif tile in reachable_tiles:
-		var unit_tile = world_to_tile(unit.global_position)
-		preview_path = find_path(unit_tile, tile, unit)
-	
-	# DEBUG print("Hover: ", hover_target, "Attack target: ", attack_target) 
-	queue_redraw()
-
-# Input function, should probably move
-func _unhandled_input(event):
-	if event is InputEventMouseButton \
-	and event.button_index == MOUSE_BUTTON_LEFT \
-	and event.pressed:
-		
-		var unit = unit_manager.active_unit
-		if unit == null or unit.action_points <= 0:
-			return
-
-		# ATTACK
-		if attack_target && turn_manager.can_attack(unit, attack_target):
-			unit.execute_attack(attack_target)
-			unit_manager.deselect_active_unit()
-			clear_action_state()
-			return
-
-		# MOVE
-		if preview_path.is_empty():
-			return
-
-		if unit == null:
-			return
-
-		if unit.action_points <= 0:
-			print("Insufficient AP, cannot move!")
-			return
-
-		# await movement
-		await unit.move_along_path(preview_path)
-
-		# spend movement AFTER animation
-		unit.spend_movement(1)
-		
-		# deselect unit (optional, unsure yet if want(i.e action after move))
-		unit.set_selected(false)
-		unit_manager.active_unit = null
-
-		# Clear visuals
-		clear_action_state()
 
 func apply_unit_obstacles(except_unit: Unit = null):
 	for unit in unit_manager.units:
