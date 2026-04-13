@@ -66,10 +66,11 @@ func _on_unit_selected(unit) -> void:
 	print("Active unit:", active_unit.name)
 	
 func deselect_active_unit():
-	if active_unit and active_unit.is_moving:
-		active_unit = null
-		emit_signal("active_unit_changed", null)
-		return
+	for u in units:
+		if u and u.is_alive and u.unit_faction == Unit.faction.PLAYER:
+			u.set_selected(false)
+	active_unit = null
+	emit_signal("active_unit_changed", null)
 
 func get_unit_at_tile(tile: Vector2i):
 	for unit in units:

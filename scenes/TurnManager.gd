@@ -34,12 +34,13 @@ func start_player_turn():
 	emit_signal("turn_started", current_phase)
 
 func end_player_turn():
-	print (" PLAYER TURN END. ")
-	
 	var unit_manager = get_tree().get_first_node_in_group("unit_manager")
+	var map = get_tree().get_first_node_in_group("map")
 	if unit_manager:
-		unit_manager.active_unit = null
-	
+		unit_manager.deselect_active_unit()
+	if map:
+		map.clear_action_state()
+
 	emit_signal("turn_ended", current_phase)
 	enemy_turn()
 

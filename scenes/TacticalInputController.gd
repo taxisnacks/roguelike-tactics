@@ -40,6 +40,8 @@ func _process(_delta):
 	map.queue_redraw()
 
 func _unhandled_input(event):
+	if turn_manager == null or turn_manager.current_phase != turn_manager.phase.PLAYER:
+		return
 	if event is InputEventMouseButton \
 	and event.button_index == MOUSE_BUTTON_LEFT \
 	and event.pressed:
