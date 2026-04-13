@@ -45,21 +45,20 @@ func take_enemy_action(enemy: Unit, unit_manager) -> void:
 
 	var reachable: Array[Vector2i] = map.get_reachable_tiles(enemy.tile_pos, enemy.unit_data.move_range, enemy)
 	var chosen_tile: Vector2i = enemy.tile_pos
-	var best_dist := INF
+	var best_dist := -1.0
 
 	for tile in reachable:
 		if tile == enemy.tile_pos:
 			continue
 
-	# attack geometry from candidate tile
-		var in_range = tile.distance_to(target.tile_pos) <= enemy.get_attack_range()
-		if not in_range:
+		var d := tile.distance_to(target.tile_pos)
+		if d > enemy.get_attack_range():
 			continue
 		if not map.has_line_of_sight(tile, target.tile_pos):
 			continue
 
-		var d := tile.distance_to(target.tile_pos)
-		if d < best_dist:
+		# prefer staying farther away, not closer
+		if d > best_dist:
 			best_dist = d
 			chosen_tile = tile
 
