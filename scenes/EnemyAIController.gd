@@ -20,32 +20,32 @@ func can_attack(enemy: Unit, target: Unit):
 
 func take_enemy_action(enemy: Unit, unit_manager) -> void:
 	if enemy == null or not enemy.is_alive:
+		print("no enemies left to take a turn.")
 		return
 	if enemy.action_points <= 0:
+		print("no action points left for enemies, continue.")
 		return
 
 	var target: Unit = choose_nearest_target(enemy, unit_manager)
 	if target == null or not target.is_alive:
+		print(enemy.name, "found no alive targets.")
 		return
 
-	# 1) Attack immediately if already in range
+	# Attack immediately if already in range
 	if can_attack(enemy, target):
+		print(enemy.name, "can attack, attempting.")
 		enemy.execute_attack(target)
 		return
 
-	# 2) Otherwise move toward a tile that can attack, if possible
+	# Otherwise move toward a tile that can attack, if possible
 	var map = get_tree().get_first_node_in_group("map")
 	if map == null:
 		print(enemy.name, " tried to move, but failed to get node in map group")
 		return
 
 	var full_path: Array[Vector2i] = map.find_path(enemy.tile_pos, target.tile_pos, enemy)
-	if full_path.is_empty():
-		print(enemy.name, " tried to move but found path empty")
-		return
-
 	var chosen_tile: Vector2i = enemy.tile_pos
-	var max_steps: int = min(enemy.move_range, full_path.size() - 1)
+	var max_steps: int = min(enemy.unit_data.move_range, full_path.size() - 1)
 
 	# Prefer tiles that end in attack range after moving
 	for i in range(1, max_steps + 1):
@@ -53,8 +53,10 @@ func take_enemy_action(enemy: Unit, unit_manager) -> void:
 		var dist := tile.distance_to(target.tile_pos)
 		if dist <= enemy.get_attack_range():
 			chosen_tile = tile
+			print(enemy.name, " chose tile ", chosen_tile)
 			break
 		chosen_tile = tile  # fallback: furthest progress this turn
+		print(enemy.name, " chose tile ", chosen_tile)
 
 	if chosen_tile != enemy.tile_pos:
 		var move_path: Array[Vector2i] = map.find_path(enemy.tile_pos, chosen_tile, enemy)
@@ -62,7 +64,10 @@ func take_enemy_action(enemy: Unit, unit_manager) -> void:
 			print(enemy.name, " is moving.")
 			await enemy.move_along_path(move_path)
 			enemy.spend_movement(1) # or AP model of your choice
+		else:
+			print(enemy.name, " tried to move, but path comes up empty.")
 
 	# 3) Re-check attack after movement
 	if enemy.action_points > 0 and can_attack(enemy, target):
+		print(enemy.name, "can attack after move, attempting.")
 		enemy.execute_attack(target)
