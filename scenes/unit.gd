@@ -85,7 +85,7 @@ func execute_attack(target: Unit):
 
 func can_attack_target(target: Unit) -> bool:
 	if target == null or not target.is_alive:
-		print(target.name, " does not exist or isn't alive, cannot attack.")
+		print("target missing or dead, cannot attack.")
 		return false
 
 	if tile_pos.distance_to(target.tile_pos) > get_attack_range():

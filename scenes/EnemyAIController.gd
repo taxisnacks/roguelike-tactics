@@ -19,7 +19,6 @@ func can_attack(enemy: Unit, target: Unit):
 	return enemy.can_attack_target(target)
 
 func take_enemy_action(enemy: Unit, unit_manager) -> void:
-	print("take enemy action was called")
 	if enemy == null or not enemy.is_alive:
 		print("no enemies left to take a turn.")
 		return
@@ -44,20 +43,32 @@ func take_enemy_action(enemy: Unit, unit_manager) -> void:
 		print(enemy.name, " tried to move, but failed to get node in map group")
 		return
 
-	var full_path: Array[Vector2i] = map.find_path(enemy.tile_pos, target.tile_pos, enemy)
+	var reachable: Array[Vector2i] = map.get_reachable_tiles(enemy.tile_pos, enemy.unit_data.move_range, enemy)
 	var chosen_tile: Vector2i = enemy.tile_pos
-	var max_steps: int = min(enemy.unit_data.move_range, full_path.size() - 1)
+	var best_dist := INF
 
-	# Prefer tiles that end in attack range after moving
-	for i in range(1, max_steps + 1):
-		var tile := full_path[i]
-		var dist := tile.distance_to(target.tile_pos)
-		if dist <= enemy.get_attack_range():
+	for tile in reachable:
+		if tile == enemy.tile_pos:
+			continue
+
+	# attack geometry from candidate tile
+		var in_range = tile.distance_to(target.tile_pos) <= enemy.get_attack_range()
+		if not in_range:
+			continue
+		if not map.has_line_of_sight(tile, target.tile_pos):
+			continue
+
+		var d := tile.distance_to(target.tile_pos)
+		if d < best_dist:
+			best_dist = d
 			chosen_tile = tile
-			print(enemy.name, " chose tile ", chosen_tile)
-			break
-		chosen_tile = tile  # fallback: furthest progress this turn
-		print(enemy.name, " chose tile ", chosen_tile)
+
+	# fallback: if no attack tile found, advance toward target as far as possible
+	if chosen_tile == enemy.tile_pos:
+		var chase_path = map.find_path(enemy.tile_pos, target.tile_pos, enemy)
+		if chase_path.size() > 1:
+			var max_steps = min(enemy.unit_data.move_range, chase_path.size() - 1)
+			chosen_tile = chase_path[max_steps]
 
 	if chosen_tile != enemy.tile_pos:
 		var move_path: Array[Vector2i] = map.find_path(enemy.tile_pos, chosen_tile, enemy)
