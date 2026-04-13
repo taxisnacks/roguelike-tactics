@@ -87,14 +87,17 @@ func get_line_tiles(from_tile: Vector2i, to_tile: Vector2i) -> Array[Vector2i]:
 func has_line_of_sight(from_tile: Vector2i, to_tile: Vector2i) -> bool:
 	var line := get_line_tiles(from_tile, to_tile)
 	if line.size() <= 1:
+		print("you're in my face, therefore LOS check success.")
 		return true
 
 	# skip shooter tile (index 0), and usually allow target tile itself
 	for i in range(1, line.size() - 1):
 		var t := line[i]
 		if is_tile_los_blocking(t):
+			print("line of sight check failed.")
 			return false
-
+		
+		print("line of sight check successful.")
 	return true
 
 func _ready():

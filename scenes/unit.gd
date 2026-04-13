@@ -85,13 +85,16 @@ func execute_attack(target: Unit):
 
 func can_attack_target(target: Unit) -> bool:
 	if target == null or not target.is_alive:
+		print(target.name, " does not exist or isn't alive, cannot attack.")
 		return false
 
 	if tile_pos.distance_to(target.tile_pos) > get_attack_range():
+		print(target.name, " is out of range, cannot attack.")
 		return false
 
 	var map = get_tree().get_first_node_in_group("map")
 	if map == null:
+		print("uh oh, map node not found, somethings very wrong.")
 		return false
 
 	return map.has_line_of_sight(tile_pos, target.tile_pos)
