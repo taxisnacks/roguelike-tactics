@@ -94,7 +94,7 @@ func can_attack_target(target: Unit) -> bool:
 
 	var map = get_tree().get_first_node_in_group("map")
 	if map == null:
-		print("uh oh, map node not found, somethings very wrong.")
+		print("uh oh, map node not found, somethings very wrong...")
 		return false
 
 	return map.has_line_of_sight(tile_pos, target.tile_pos)

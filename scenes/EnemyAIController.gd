@@ -19,6 +19,7 @@ func can_attack(enemy: Unit, target: Unit):
 	return enemy.can_attack_target(target)
 
 func take_enemy_action(enemy: Unit, unit_manager) -> void:
+	print("take enemy action was called")
 	if enemy == null or not enemy.is_alive:
 		print("no enemies left to take a turn.")
 		return
@@ -28,12 +29,12 @@ func take_enemy_action(enemy: Unit, unit_manager) -> void:
 
 	var target: Unit = choose_nearest_target(enemy, unit_manager)
 	if target == null or not target.is_alive:
-		print(enemy.name, "found no alive targets.")
+		print(enemy.name, " found no alive targets.")
 		return
 
 	# Attack immediately if already in range
 	if can_attack(enemy, target):
-		print(enemy.name, "can attack, attempting.")
+		print(enemy.name, " can attack, attempting.")
 		enemy.execute_attack(target)
 		return
 
@@ -69,5 +70,5 @@ func take_enemy_action(enemy: Unit, unit_manager) -> void:
 
 	# 3) Re-check attack after movement
 	if enemy.action_points > 0 and can_attack(enemy, target):
-		print(enemy.name, "can attack after move, attempting.")
+		print(enemy.name, " can attack after move, attempting.")
 		enemy.execute_attack(target)
