@@ -4,6 +4,7 @@ extends Node
 var hover_tile: Vector2i = Vector2i(-1, -1)
 var hover_target = null
 @onready var unit_manager = get_tree().get_first_node_in_group("unit_manager")
+@onready var enemy_ai_controller = get_tree().get_first_node_in_group("enemy_ai_controller")
 @onready var turn_manager = get_tree().get_first_node_in_group("turn_manager")
 @onready var map = get_tree().get_first_node_in_group("map")
 
@@ -48,7 +49,7 @@ func _unhandled_input(event):
 			return
 
 		# ATTACK
-		if map.attack_target && turn_manager.can_attack(unit, map.attack_target):
+		if map.attack_target && enemy_ai_controller.can_attack(unit, map.attack_target):
 			unit.execute_attack(map.attack_target)
 			unit_manager.deselect_active_unit()
 			map.clear_action_state()

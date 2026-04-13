@@ -83,7 +83,6 @@ func execute_attack(target: Unit):
 	else:
 		print(self.name, "'s attack missed")
 
-
 func can_attack_target(target: Unit) -> bool:
 	if target == null or not target.is_alive:
 		return false
