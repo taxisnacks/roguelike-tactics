@@ -23,6 +23,16 @@ func get_units_in_faction(faction: Unit.faction) -> Array[Unit]:
 func _on_unit_died(unit):
 	units.erase(unit)
 
+func set_active_unit(next_unit: Unit) -> void:
+	if active_unit == next_unit:
+		return
+	if active_unit:
+		active_unit.set_selected(false)
+	active_unit = next_unit
+	if active_unit:
+		active_unit.set_selected(true)
+	emit_signal("active_unit_changed", active_unit)
+
 func _on_unit_selected(unit) -> void:
 	
 	if turn_manager == null:
@@ -36,12 +46,14 @@ func _on_unit_selected(unit) -> void:
 	if active_unit == unit:
 		print ("error: already selected")
 		return
+	if _any_unit_moving():
+		print("Selection blocked while unit movement is resolving.")
+		return
 	if active_unit:
 		active_unit.set_selected(false)
+	var map = get_tree().get_first_node_in_group("map")
 	active_unit = unit
 	active_unit.set_selected(true)
-
-	var map = get_tree().get_first_node_in_group("map")
 	
 	if map:
 		var tile = map.world_to_tile(unit.global_position)
@@ -54,14 +66,19 @@ func _on_unit_selected(unit) -> void:
 	print("Active unit:", active_unit.name)
 	
 func deselect_active_unit():
-	if active_unit:
-		active_unit.set_selected(false)
+	if active_unit and active_unit.is_moving:
 		active_unit = null
 		emit_signal("active_unit_changed", null)
-		print("Active unit cleared")
+		return
 
 func get_unit_at_tile(tile: Vector2i):
 	for unit in units:
 		if unit.tile_pos == tile and unit.is_alive:
 			return unit
 	return null
+
+func _any_unit_moving() -> bool:
+	for u in units:
+		if u.is_alive and u.is_moving:
+			return true
+	return false

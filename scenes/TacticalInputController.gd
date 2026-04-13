@@ -66,15 +66,16 @@ func _unhandled_input(event):
 			print("Insufficient AP, cannot move!")
 			return
 
-		# await movement
-		await unit.move_along_path(map.preview_path)
+		# await movement, avoid mutation race by duping
+		var moving_unit = unit
+		var move_path = map.preview_path.duplicate()
+		await moving_unit.move_along_path(move_path)
 
 		# spend movement AFTER animation
-		unit.spend_movement(1)
+		moving_unit.spend_movement(1)
 		
-		# deselect unit (optional, unsure yet if want(i.e action after move))
-		unit.set_selected(false)
-		unit_manager.active_unit = null
-
-		# Clear visuals
-		map.clear_action_state()
+	# only mutate selection/UI if player didn't switch to another unit
+		if unit_manager.active_unit == moving_unit:
+			moving_unit.set_selected(false)
+			unit_manager.deselect_active_unit()
+			map.clear_action_state()

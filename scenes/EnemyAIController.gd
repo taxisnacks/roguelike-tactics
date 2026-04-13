@@ -44,30 +44,27 @@ func take_enemy_action(enemy: Unit, unit_manager) -> void:
 		return
 
 	var reachable: Array[Vector2i] = map.get_reachable_tiles(enemy.tile_pos, enemy.unit_data.move_range, enemy)
-	var chosen_tile: Vector2i = enemy.tile_pos
-	var best_dist := -1.0
+	var chase_tile := enemy.tile_pos
+	var best_chase_dist := enemy.tile_pos.distance_to(target.tile_pos)
 
 	for tile in reachable:
 		if tile == enemy.tile_pos:
 			continue
-
 		var d := tile.distance_to(target.tile_pos)
-		if d > enemy.get_attack_range():
-			continue
-		if not map.has_line_of_sight(tile, target.tile_pos):
-			continue
+		if d < best_chase_dist:
+			best_chase_dist = d
+			chase_tile = tile
 
-		# prefer staying farther away, not closer
-		if d > best_dist:
-			best_dist = d
-			chosen_tile = tile
+	var chosen_tile := chase_tile
 
-	# fallback: if no attack tile found, advance toward target as far as possible
-	if chosen_tile == enemy.tile_pos:
-		var chase_path = map.find_path(enemy.tile_pos, target.tile_pos, enemy)
-		if chase_path.size() > 1:
-			var max_steps = min(enemy.unit_data.move_range, chase_path.size() - 1)
-			chosen_tile = chase_path[max_steps]
+	if chase_tile != enemy.tile_pos:
+		var chase_path: Array[Vector2i] = map.find_path(enemy.tile_pos, chase_tile, enemy)
+		for i in range(1, chase_path.size()):
+			var step := chase_path[i]
+			if step.distance_to(target.tile_pos) <= enemy.get_attack_range() \
+			and map.has_line_of_sight(step, target.tile_pos):
+				chosen_tile = step
+				break
 
 	if chosen_tile != enemy.tile_pos:
 		var move_path: Array[Vector2i] = map.find_path(enemy.tile_pos, chosen_tile, enemy)

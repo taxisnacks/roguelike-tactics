@@ -134,7 +134,6 @@ func get_tile_cover(tile: Vector2i) -> int:
 		return 0
 	return int(tile_data.get_custom_data("cover"))
 
-
 func get_reachable_tiles(from_tile: Vector2i, max_cost: int, mover: Unit) -> Array[Vector2i]:
 	apply_unit_obstacles(mover)
 

@@ -55,9 +55,10 @@ func _on_area_2d_input_event(viewport, event, shape_idx): # move to unitmanager 
 		emit_signal("unit_selected", self)
 	
 func move_along_path(path: Array[Vector2i]) -> void:
+	var safe_path: Array[Vector2i] = path.duplicate()
 	is_moving = true
-	for i in range(1, path.size()):
-		await move_to_tile_animated(path[i])
+	for i in range(1, safe_path.size()):
+		await move_to_tile_animated(safe_path[i])
 	is_moving = false
 
 func move_to_tile_animated(tile: Vector2i) -> void:
