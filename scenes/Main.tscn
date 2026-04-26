@@ -1,13 +1,16 @@
 [gd_scene load_steps=9 format=3 uid="uid://bmsde3r8kl1ag"]
 
-[ext_resource type="Script" uid="uid://epg4ygi32mxu" path="res://scripts/UnitManager.gd" id="1_elqb8"]
-[ext_resource type="Script" uid="uid://c3b7mmctem2ol" path="res://scripts/TurnManager.gd" id="2_0bbpv"]
-[ext_resource type="PackedScene" uid="uid://upc8ed66t3qt" path="res://scenes/Map.tscn" id="2_rvslj"]
-[ext_resource type="Script" uid="uid://csdo5u26u0yt5" path="res://scripts/InputManager.gd" id="4_rarhs"]
+[ext_resource type="Script" uid="uid://epg4ygi32mxu" path="res://scripts/Units/UnitManager.gd" id="1_elqb8"]
+[ext_resource type="Script" uid="uid://c3b7mmctem2ol" path="res://scripts/Combat/TurnManager.gd" id="2_0bbpv"]
+[ext_resource type="PackedScene" uid="uid://upc8ed66t3qt" path="res://scenes/Room_Demo_001.tscn" id="2_rvslj"]
+[ext_resource type="Script" uid="uid://csdo5u26u0yt5" path="res://scripts/Input/InputManager.gd" id="4_rarhs"]
 [ext_resource type="Script" uid="uid://cu5xj3m1ldog" path="res://scripts/EnemyAIController.gd" id="5_jlsqs"]
-[ext_resource type="Script" uid="uid://brijphysmky8a" path="res://scripts/CombatRules.gd" id="6_q8u5g"]
-[ext_resource type="Script" uid="uid://b1fnmyeniajpw" path="res://scripts/TacticalInputController.gd" id="7_lhr70"]
-[ext_resource type="Script" uid="uid://bckpxmihq62cu" path="res://scripts/MissionController.gd" id="8_wp0k4"]
+[ext_resource type="Script" uid="uid://brijphysmky8a" path="res://scripts/Combat/CombatRules.gd" id="6_q8u5g"]
+[ext_resource type="Script" uid="uid://b1fnmyeniajpw" path="res://scripts/Input/TacticalInputController.gd" id="7_lhr70"]
+
+[sub_resource type="GDScript" id="GDScript_nxtc6"]
+script/source = "extends Node
+"
 
 [node name="Node2D" type="Node2D"]
 
@@ -38,4 +41,4 @@ script = ExtResource("6_q8u5g")
 script = ExtResource("7_lhr70")
 
 [node name="MissionController" type="Node" parent="."]
-script = ExtResource("8_wp0k4")
+script = SubResource("GDScript_nxtc6")

@@ -11,7 +11,7 @@ config_version=5
 [application]
 
 config/name="roguelike-tactics"
-run/main_scene="uid://bmsde3r8kl1ag"
+run/main_scene="uid://xlcjrc4fp6pv"
 config/features=PackedStringArray("4.5", "Forward Plus")
 config/icon="res://icon.svg"
 
