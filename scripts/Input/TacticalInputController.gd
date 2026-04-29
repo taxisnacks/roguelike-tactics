@@ -6,11 +6,17 @@ var hover_target = null
 @onready var unit_manager = get_tree().get_first_node_in_group("unit_manager")
 @onready var enemy_ai_controller = get_tree().get_first_node_in_group("enemy_ai_controller")
 @onready var turn_manager = get_tree().get_first_node_in_group("turn_manager")
-@onready var map = get_tree().get_first_node_in_group("map")
+var map = null
 
 func _process(_delta):
+	if map == null:
+		map = get_tree().get_first_node_in_group("map")
+	if unit_manager == null or map == null:
+		return
+
 	var unit = unit_manager.active_unit
-	if unit_manager == null or unit == null:
+
+	if unit == null:
 		return
 	if unit.is_moving:
 		return
@@ -40,7 +46,9 @@ func _process(_delta):
 	map.queue_redraw()
 
 func _unhandled_input(event):
-	if turn_manager == null or turn_manager.current_phase != turn_manager.phase.PLAYER:
+	if map == null:
+		map = get_tree().get_first_node_in_group("map")
+	if turn_manager == null or map == null or turn_manager.current_phase != turn_manager.phase.PLAYER:
 		return
 	if event is InputEventMouseButton \
 	and event.button_index == MOUSE_BUTTON_LEFT \
@@ -66,18 +74,3 @@ func _unhandled_input(event):
 
 		if unit.action_points <= 0:
 			print("Insufficient AP, cannot move!")
-			return
-
-		# await movement, avoid mutation race by duping
-		var moving_unit = unit
-		var move_path = map.preview_path.duplicate()
-		await moving_unit.move_along_path(move_path)
-
-		# spend movement AFTER animation
-		moving_unit.spend_movement(1)
-		
-	# only mutate selection/UI if player didn't switch to another unit
-		if unit_manager.active_unit == moving_unit:
-			moving_unit.set_selected(false)
-			unit_manager.deselect_active_unit()
-			map.clear_action_state()

@@ -35,7 +35,7 @@ func _pick_room(_floor_index: int) -> String:
 		return ""
 	return ROOM_POOL[randi() % ROOM_POOL.size()]
 	
-	func record_encounter_win() -> bool:
+func record_encounter_win() -> bool:
 	if not run_active:
 		return false
 
@@ -51,8 +51,4 @@ func record_encounter_loss() -> void:
 
 func has_active_run() -> bool:
 	return run_active
-	
-func _on_button_pressed():
-	start_new_contract()
-	get_tree().change_scene_to_file("res://scenes/Main.tscn")
 	

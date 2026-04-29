@@ -1,8 +1,9 @@
-[gd_scene load_steps=9 format=3 uid="uid://bmsde3r8kl1ag"]
+[gd_scene load_steps=10 format=3 uid="uid://bmsde3r8kl1ag"]
 
 [ext_resource type="Script" uid="uid://epg4ygi32mxu" path="res://scripts/Units/UnitManager.gd" id="1_elqb8"]
 [ext_resource type="Script" uid="uid://c3b7mmctem2ol" path="res://scripts/Combat/TurnManager.gd" id="2_0bbpv"]
 [ext_resource type="Script" uid="uid://gti2w67cfrsr" path="res://scripts/State/RunGenerator.gd" id="2_nxtc6"]
+[ext_resource type="Script" uid="uid://diskn6berrv1g" path="res://scripts/State/EncounterManager.gd" id="3_jlsqs"]
 [ext_resource type="Script" uid="uid://csdo5u26u0yt5" path="res://scripts/Input/InputManager.gd" id="4_rarhs"]
 [ext_resource type="Script" uid="uid://cu5xj3m1ldog" path="res://scripts/EnemyAIController.gd" id="5_jlsqs"]
 [ext_resource type="Script" uid="uid://brijphysmky8a" path="res://scripts/Combat/CombatRules.gd" id="6_q8u5g"]
@@ -18,7 +19,12 @@ script/source = "extends Node
 script = ExtResource("4_rarhs")
 
 [node name="GameManager" type="Node" parent="."]
+
+[node name="RunGenerator" type="Node" parent="GameManager" groups=["run_generator"]]
 script = ExtResource("2_nxtc6")
+
+[node name="EncounterManager" type="Node" parent="GameManager/RunGenerator"]
+script = ExtResource("3_jlsqs")
 
 [node name="UnitManager" type="Node" parent="." groups=["unit_manager"]]
 script = ExtResource("1_elqb8")

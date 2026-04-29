@@ -1,6 +1,6 @@
 [gd_scene load_steps=2 format=3 uid="uid://xlcjrc4fp6pv"]
 
-[ext_resource type="Script" uid="uid://gti2w67cfrsr" path="res://scripts/State/RunGenerator.gd" id="1_8mbd6"]
+[ext_resource type="Script" uid="uid://bqidj64ynfnqj" path="res://scenes/HubController.gd" id="1_8mbd6"]
 
 [node name="Hub" type="Node2D"]
 script = ExtResource("1_8mbd6")
