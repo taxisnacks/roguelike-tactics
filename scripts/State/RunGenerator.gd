@@ -35,6 +35,9 @@ func _pick_room(_floor_index: int) -> String:
 		return ""
 	return ROOM_POOL[randi() % ROOM_POOL.size()]
 	
+func get_current_floor_scene() -> String:
+	return ROOM_POOL[current_floor_index]
+
 func record_encounter_win() -> bool:
 	if not run_active:
 		return false
