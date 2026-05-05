@@ -47,11 +47,6 @@ The game is structured around modular controllers responsible for input, turn fl
 - Weapon behavior via `WeaponResource`
 - Mission structure via `ContractResource`
 
-### Data-driven resources
-- `UnitResource`
-- `WeaponResource`
-- `ContractResource`
-
 ---
 
 ## Controls (Current)
