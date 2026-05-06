@@ -9,6 +9,7 @@
 [ext_resource type="Texture2D" uid="uid://c2waex3cb7gku" path="res://data/sprites/debug-unit-enemy.png" id="6_inly4"]
 [ext_resource type="Resource" uid="uid://dmg5g45oh2s58" path="res://data/weapons/tier1_rifle.tres" id="7_7ctrk"]
 [ext_resource type="Resource" uid="uid://oy4tb15urr7g" path="res://data/units/Rookie.tres" id="8_ii6k2"]
+[ext_resource type="Script" uid="uid://b1fnmyeniajpw" path="res://scripts/Input/TacticalInputController.gd" id="10_0ayd0"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_41ykk"]
 texture = ExtResource("2_tm3qm")
@@ -80,3 +81,6 @@ unit_data = ExtResource("8_ii6k2")
 unit_faction = 1
 unit_sprite = ExtResource("6_inly4")
 weapon = ExtResource("7_7ctrk")
+
+[node name="TacticalInputController" type="Node" parent="." unique_id=641568576 groups=["tactical_input_controller"]]
+script = ExtResource("10_0ayd0")

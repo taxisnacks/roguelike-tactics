@@ -7,7 +7,6 @@
 [ext_resource type="Script" uid="uid://csdo5u26u0yt5" path="res://scripts/Input/InputManager.gd" id="4_rarhs"]
 [ext_resource type="Script" uid="uid://cu5xj3m1ldog" path="res://scripts/EnemyAIController.gd" id="5_jlsqs"]
 [ext_resource type="Script" uid="uid://brijphysmky8a" path="res://scripts/Combat/CombatRules.gd" id="6_q8u5g"]
-[ext_resource type="Script" uid="uid://b1fnmyeniajpw" path="res://scripts/Input/TacticalInputController.gd" id="7_lhr70"]
 
 [node name="Node2D" type="Node2D" unique_id=1911866628]
 
@@ -31,9 +30,6 @@ script = ExtResource("5_jlsqs")
 
 [node name="CombatRules" type="Node" parent="." unique_id=1223607848]
 script = ExtResource("6_q8u5g")
-
-[node name="TacticalInputController" type="Node" parent="." unique_id=1301610282 groups=["tactical_input_controller"]]
-script = ExtResource("7_lhr70")
 
 [node name="MissionController" type="Node" parent="." unique_id=1504195512]
 
