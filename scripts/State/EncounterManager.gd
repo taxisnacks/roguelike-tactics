@@ -11,7 +11,7 @@ func _ready() -> void:
 
 	if combat_rules.has_signal("encounter_resolved"):
 		combat_rules.encounter_resolved.connect(_on_encounter_resolved)
-
+	
 	_load_current_floor()
 
 func _load_current_floor() -> void:
